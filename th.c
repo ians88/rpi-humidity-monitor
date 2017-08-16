@@ -47,9 +47,9 @@ void dht11_read_val()
   // float farenheit;
 
   char SQLstring[64];            // string to send to SQL engine
-  char TimeString[64];           // formatted time
-  time_t rawtime;
-  struct tm * timeinfo;
+  // char TimeString[64];           // formatted time
+  // time_t rawtime;
+  // struct tm * timeinfo;
 
   // setup mysql connection
   MYSQL *con = mysql_init(NULL);
@@ -134,7 +134,7 @@ int main(void)
 //   //  int deltime;                   // how many seconds ago was that?
 
 //<<<<<<< HEAD
-  //if (mysql_real_connect(con, "localhost", "root", "password", 
+  //if (mysql_real_connect(con, "localhost", "root", "password",
 //			 "monitoring", 0, NULL, 0) == NULL) finish_with_error(con);
 //=======
 //   // char SQLstring[64];            // string to send to SQL engine
