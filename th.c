@@ -91,8 +91,9 @@ void dht11_read_val()
   }
 
   // verify cheksum and print the verified data
-  printf("Temp = %d",dht11_val[0]);
-  printf("J = %d",j);
+  printf("Humid = %d,%d",dht11_val[0],dht11_val[1]);
+  printf(" | Temp = %d,%d",dht11_val[2],dht11_val[3]);
+  printf(" | J = %d",j);
 
   if((j>=40)&&(dht11_val[4]==((dht11_val[0]+dht11_val[1]+dht11_val[2]+dht11_val[3])& 0xFF)))
   {
