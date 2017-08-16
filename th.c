@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <mysql/mysql.h>
+
 #define MAX_TIME 85
 #define DHT11PIN 7
 int dht11_val[5]={0,0,0,0,0};
@@ -18,7 +20,6 @@ void dht11_read_val()
   uint8_t lststate=HIGH;
   uint8_t counter=0;
   uint8_t j=0,i;
-  float farenheit;
 
   char SQLstring[64];            // string to send to SQL engine
 
