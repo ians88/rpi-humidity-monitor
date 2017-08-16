@@ -6,12 +6,29 @@
 #define DHT11PIN 7
 int dht11_val[5]={0,0,0,0,0};
 
+void finish_with_error(MYSQL *con)
+{
+  fprintf(stderr, "%s\n", mysql_error(con));
+  mysql_close(con);
+  exit(1);
+}
+
 void dht11_read_val()
 {
   uint8_t lststate=HIGH;
   uint8_t counter=0;
   uint8_t j=0,i;
   float farenheit;
+
+  char SQLstring[64];            // string to send to SQL engine
+
+  MYSQL *con = mysql_init(NULL);
+
+  if (con == NULL) finish_with_error(con);
+
+  if (mysql_real_connect(con, "localhost", "root", "password",
+       "monitoring", 0, NULL, 0) == NULL) finish_with_error(con);
+
   for(i=0;i<5;i++)
      dht11_val[i]=0;
   pinMode(DHT11PIN,OUTPUT);
@@ -20,6 +37,8 @@ void dht11_read_val()
   digitalWrite(DHT11PIN,HIGH);
   delayMicroseconds(40);
   pinMode(DHT11PIN,INPUT);
+
+
   for(i=0;i<MAX_TIME;i++)
   {
     counter=0;
@@ -43,8 +62,12 @@ void dht11_read_val()
   // verify cheksum and print the verified data
   if((j>=40)&&(dht11_val[4]==((dht11_val[0]+dht11_val[1]+dht11_val[2]+dht11_val[3])& 0xFF)))
   {
-    farenheit=dht11_val[2]*9./5.+32;
-    printf("Humidity = %d.%d %% Temperature = %d.%d *C (%.1f *F)\n",dht11_val[0],dht11_val[1],dht11_val[2],dht11_val[3],farenheit);
+    printf("Humidity = %d.%d %% Temperature = %d.%d *C\n",dht11_val[0],dht11_val[1],dht11_val[2],dht11_val[3]);
+
+    sprintf(SQLstring,"INSERT INTO TempHumid VALUES(unix_timestamp(now()),%d.%d,%d.%d)",dht11_val[2],dht11_val[3],dht11_val[0],dht11_val[1]);
+    //      printf("%s\n",SQLstring);
+    if (mysql_query(con, SQLstring)) finish_with_error(con);
+
   }
   else
     printf("Invalid Data!!\n");
@@ -58,7 +81,7 @@ int main(void)
   while(1)
   {
      dht11_read_val();
-     delay(3000);
+     delay(30000);
   }
   return 0;
 }
