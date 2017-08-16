@@ -57,7 +57,7 @@ void dht11_read_val()
   if (con == NULL) finish_with_error(con);
 
   if (mysql_real_connect(con, "localhost", "root", "password",
-       "Monitoring", 0, NULL, 0) == NULL) finish_with_error(con);
+       "monitoring", 0, NULL, 0) == NULL) finish_with_error(con);
   // end setup mysql
 
   for(i=0;i<5;i++)
