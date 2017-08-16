@@ -67,7 +67,7 @@ int main (void)
   if (con == NULL) finish_with_error(con);
 
   if (mysql_real_connect(con, "localhost", "root", "password", 
-			 "Monitoring", 0, NULL, 0) == NULL) finish_with_error(con);
+			 "monitoring", 0, NULL, 0) == NULL) finish_with_error(con);
 
   // wait for an interval to start and end
   printf("Sync to cycletime...");
